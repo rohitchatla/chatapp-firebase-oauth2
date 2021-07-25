@@ -1,0 +1,24 @@
+jobs:
+  deploy_dev:
+    docker:
+      - image: circleci/node:10.15.3
+    steps:
+      - checkout
+      - run:
+          name: yarn install
+          command: yarn
+      - run:
+          name: build
+          command: yarn build
+      - run:
+          name: deploy to Firebase Hosting
+          command: yarn deploy --token=$FIREBASE_TOKEN
+
+workflows:
+  version: 2
+  deploy_dev:
+    jobs:
+      - deploy_dev:
+          filters:
+            branches:
+              only: master
